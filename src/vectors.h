@@ -1,5 +1,6 @@
 #pragma once
-#include <cmath>
+
+const float PI = 3.14159265358979323846264338;
 
 struct Vec3
 {

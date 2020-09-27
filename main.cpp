@@ -1,38 +1,11 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
-#include "src/vectors.h"
-#include "src/objects.h"
+#include "src/scene.h"
 
-//
-
-//
-
-//
-
-class Scene
-{
-private:
-	std::vector<objects::Sphere> spheres;
-
-public:
-	Scene()
-	{
-	}
-
-	void _add_shpere(objects::Sphere obj)
-	{
-		spheres.push_back(obj);
-	}
-};
-
-//
-
-//
-
-class Example : public olc::PixelGameEngine
+class RayTracer : public olc::PixelGameEngine
 {
 public:
-	Example()
+	RayTracer()
 	{
 		sAppName = "Ray-Tracer";
 	}
@@ -59,8 +32,8 @@ public:
 
 int main()
 {
-	Example demo;
-	if (demo.Construct(256, 240, 4, 4))
-		demo.Start();
+	RayTracer App;
+	if (App.Construct(256, 240, 4, 4))
+		App.Start();
 	return 0;
 }

@@ -1,0 +1,2 @@
+raytracer: main.cpp src/scene.cpp src/vectors.cpp src/ray.cpp src/objects.cpp src/camera.cpp
+	clear && g++ -o a main.cpp src/scene.cpp src/vectors.cpp src/ray.cpp src/objects.cpp src/camera.cpp -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17 && ./a

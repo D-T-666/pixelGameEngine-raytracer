@@ -1,24 +1,34 @@
 #pragma once
 
-#include "vectors.h"
-#include "objects.h"
-#include "camera.h"
-#include "ray.h"
 #include <iostream>
+#include <vector>
+#include "./vectors.h"
+#include "./objects.h"
+#include "./camera.h"
+#include "./ray.h"
 
 class Scene
 {
-private:
-	std::vector<objects::Sphere> spheres;
-	Camera cam;
-	int WIDTH;
-	int HEIGHT;
 
 public:
 	Scene();
-	Scene(Camera _cam);
+	Scene(int _W, int _H);
+	Scene(int _W, int _H, Camera _cam);
 
-	void _add_shpere(objects::Sphere obj);
+	void add_sphere(objects::Sphere obj);
+	void add_disc(objects::Disc obj);
+	void add_plane(objects::Plane obj);
 
-	void _trace_pixel(int x, int y);
+	Vec3 trace_pixel(int x, int y);
+
+	Ray _bounce_ray(Ray ray);
+	Vec3 _shadow_ray(Vec3 pos);
+
+private:
+	std::vector<objects::Sphere> vspheres;
+	std::vector<objects::Disc> vdiscs;
+	std::vector<objects::Plane> vplanes;
+	Camera cam;
+	int WIDTH = 256;
+	int HEIGHT = 256;
 };

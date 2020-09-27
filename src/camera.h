@@ -8,9 +8,11 @@ private:
 	Vec3 pos;
 	Vec3 dir;
 	float fov;
+	float fnear = 0.1f;
 
 public:
-	Camera() {}
-	Camera(Vec3 _pos, Vec3 _dir) {}
-	Ray get_ray(float x_offset, float y_offset) {}
+	Camera();
+	Camera(Vec3 _pos, Vec3 _dir);
+	Camera(Vec3 _pos, Vec3 _dir, float fov);
+	Ray get_ray(float x_offset, float y_offset);
 };

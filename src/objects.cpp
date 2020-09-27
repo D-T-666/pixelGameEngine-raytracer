@@ -1,0 +1,3 @@
+
+	float fnear;
+	float ffar;

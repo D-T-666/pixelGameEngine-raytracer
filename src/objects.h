@@ -17,10 +17,17 @@ namespace objects
 	{
 		Vec3 pos;
 		Vec3 N;
-		float r;
 		Vec3 col;
-		Sphere(Vec3 p) : pos(p) {}
-		Sphere(Vec3 p, float rad) : pos(p), r(rad) {}
-		Sphere(Vec3 p, float rad, Vec3 c) : pos(p), r(rad), col(c) {}
+		Disc(Vec3 p) : pos(p) {}
+		Disc(Vec3 p, Vec3 Normal) : pos(p), N(Normal) {}
+		Disc(Vec3 p, Vec3 Normal, Vec3 c) : pos(p), N(Normal), col(c) {}
+	};
+
+	struct Plane
+	{
+		Vec3 abc;
+		Vec3 col;
+		Plane(Vec3 p) : abc(p) {}
+		Plane(Vec3 p, Vec3 c) : abc(p), col(c) {}
 	};
 }; // namespace objects

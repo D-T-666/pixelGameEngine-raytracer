@@ -16,16 +16,21 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		objects::Sphere n_shpere(Vec3(1.0f, 1.0f, 1.0f), 1.0f);
-		my_scene._add_shpere(n_shpere);
+		// objects::Sphere n_shpere(Vec3(1.0f, 1.0f, 1.0f), 1.0f);
+		// my_scene.add_sphere(n_shpere);
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
 		for (int x = 0; x < ScreenWidth(); x++)
+		{
 			for (int y = 0; y < ScreenHeight(); y++)
-				Draw(x, y, olc::Pixel(rand() % 256, rand() % 256, rand() % 256));
+			{
+				Vec3 col = my_scene.trace_pixel(x, y);
+				Draw(x, y, olc::Pixel(col.x, col.y, col.z));
+			}
+		}
 		return true;
 	}
 };

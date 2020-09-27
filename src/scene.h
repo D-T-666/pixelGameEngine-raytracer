@@ -21,7 +21,7 @@ public:
 
 	Vec3 trace_pixel(int x, int y);
 
-	Ray _bounce_ray(Ray ray);
+	Ray _bounce_ray(Ray ray, bool shot_off);
 	Vec3 _shadow_ray(Vec3 pos);
 
 private:

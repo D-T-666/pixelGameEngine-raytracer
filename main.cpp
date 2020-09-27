@@ -16,8 +16,9 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		// objects::Sphere n_shpere(Vec3(1.0f, 1.0f, 1.0f), 1.0f);
-		// my_scene.add_sphere(n_shpere);
+		
+		objects::Sphere n_shpere(Vec3(1.0f, 1.0f, 1.0f), 1.0f);
+		my_scene.add_sphere(n_shpere);
 		return true;
 	}
 
@@ -38,7 +39,7 @@ public:
 int main()
 {
 	RayTracer App;
-	if (App.Construct(256, 240, 4, 4))
+	if (App.Construct(256, 256, 4, 4))
 		App.Start();
 	return 0;
 }

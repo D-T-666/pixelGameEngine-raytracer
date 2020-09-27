@@ -1,10 +1,7 @@
 #include "./scene.h"
 #include <iostream>
 
-Scene::Scene()
-{
-	std::cout << "int .cpp file\n";
-}
+Scene::Scene() {}
 Scene::Scene(int _W, int _H)
 {
 	WIDTH = _W;
@@ -12,6 +9,8 @@ Scene::Scene(int _W, int _H)
 }
 Scene::Scene(int _W, int _H, Camera _cam)
 {
+	WIDTH = _W;
+	HEIGHT = _H;
 	cam = _cam;
 }
 
@@ -36,16 +35,20 @@ Vec3 Scene::trace_pixel(int x, int y)
 	Ray ray = cam.get_ray(x_off, y_off);
 
 	// bounce the ray n times
+	bool shot_off = false; // to see if the ray shoots off into the distance
+	_bounce_ray(ray, shot_off);
+
 	// cast shadow rays on the way
 
 	// return the color of the final ray
-	return Vec3(x, y, 0);
+	return Vec3(shot_off ? x : 0, shot_off ? y : 0, 0);
 };
 
-Ray Scene::_bounce_ray(Ray ray)
+Ray Scene::_bounce_ray(Ray ray, bool shot_off)
 {
 	// TODO:
 	// detect what the ray collides with.
+	// calculate the collission point
 	// calculate new ray color.
 	// calculate the bounce ray.
 	// return the bounce ray with the new collor.

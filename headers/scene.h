@@ -4,6 +4,7 @@
 #include <vector>
 #include "./vectors.h"
 #include "./objects.h"
+#include "./lights.h"
 #include "./camera.h"
 #include "./ray.h"
 
@@ -21,7 +22,7 @@ public:
 
 	Vec3 trace_pixel(int x, int y);
 
-	Ray _bounce_ray(Ray ray, bool shot_off);
+	Ray _bounce_ray(Ray ray, bool &shot_off);
 	Vec3 _shadow_ray(Vec3 pos);
 
 private:

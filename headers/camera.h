@@ -7,7 +7,7 @@ class Camera
 private:
 	Vec3 pos;
 	Vec3 dir;
-	float fov;
+	float fov = 0.5f;
 	float fnear = 0.1f;
 
 public:

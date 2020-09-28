@@ -1,6 +1,6 @@
 #define OLC_PGE_APPLICATION
-#include "olcPixelGameEngine.h"
-#include "src/scene.h"
+#include "headers/olcPixelGameEngine.h"
+#include "headers/scene.h"
 
 class RayTracer : public olc::PixelGameEngine
 {
@@ -16,9 +16,13 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		
-		objects::Sphere n_shpere(Vec3(1.0f, 1.0f, 1.0f), 1.0f);
-		my_scene.add_sphere(n_shpere);
+		Camera cam(Vec3(0.0f, 0.0f, -5.0f), Vec3(0.0f, 0.0f, 1.0f));
+		my_scene = Scene(256, 256, cam);
+
+		objects::Sphere n_shpere_mid(Vec3(0.0f, 1.0f, 0.0f), 0.5f);
+		objects::Sphere n_shpere_up(Vec3(0.0f, -1.0f, 0.0f), 0.5f);
+		my_scene.add_sphere(n_shpere_up);
+		my_scene.add_sphere(n_shpere_mid);
 		return true;
 	}
 
@@ -39,7 +43,7 @@ public:
 int main()
 {
 	RayTracer App;
-	if (App.Construct(256, 256, 4, 4))
+	if (App.Construct(256, 256, 2, 2))
 		App.Start();
 	return 0;
 }

@@ -30,4 +30,8 @@ namespace objects
 		Plane(Vec3 p) : abc(p) {}
 		Plane(Vec3 p, Vec3 c) : abc(p), col(c) {}
 	};
+
+	Vec3 get_sphere_normal(Sphere sphere, Vec3 pos);
+	Vec3 get_disc_normal(Disc disc, Vec3 pos);
+	Vec3 get_plane_normal(Plane plane, Vec3 pos);
 }; // namespace objects

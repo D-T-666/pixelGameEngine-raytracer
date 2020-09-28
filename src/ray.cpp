@@ -2,12 +2,17 @@
 
 float Ray::intersect_sphere(objects::Sphere sph)
 {
-    const double p = dot(sph.pos - pos, dir);
-    const double y = (pos + dir * p - sph.pos).magSq();
-    const double len = sqrt(sph.r * sph.r - y);
-    const double t0 = p - len;
-    const double t1 = p + len;
-    return ((t0 < t1 && t0 > 0) ? t0 : t1);
+
+    const float p = dot(sph.pos - pos, dir);
+    const float y = (pos + dir * p - sph.pos).magSq();
+    if ((p > 0) ? y < sph.r * sph.r : false)
+    {
+        const float l = sqrt((sph.r * sph.r) - y);
+        const float t0 = p - l;
+        const float t1 = p + l;
+        return ((t0 < t1 && t0 > 0.0f) ? t0 : t1);
+    }
+    return -1.0f;
 }
 
 // float Ray::intersect_disc(objects::Disc disc)
@@ -16,7 +21,7 @@ float Ray::intersect_sphere(objects::Sphere sph)
 //     if (denom > 1e-6)
 //     {
 //         const Vec3 p0l0 = n * p0 - ray.o;
-//         const double t = dot(p0l0, n) / denom;
+//         const float t = dot(p0l0, n) / denom;
 //         const Vec3 poi = ray.d * t + ray.o;
 //         return t;
 //     }
@@ -29,7 +34,7 @@ float Ray::intersect_sphere(objects::Sphere sph)
 //     if (denom > 1e-6)
 //     {
 //         const Vec3 p0l0 = plane.N * plane.pos - pos;
-//         const double t = dot(p0l0, n) / denom;
+//         const float t = dot(p0l0, n) / denom;
 //         const Vec3 poi = dir * t + pos;
 //         return t;
 //     }

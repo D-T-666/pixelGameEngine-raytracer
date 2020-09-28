@@ -1,5 +1,6 @@
 #pragma once
 #include "vectors.h"
+#include "material.h"
 
 namespace objects
 {
@@ -7,28 +8,28 @@ namespace objects
 	{
 		Vec3 pos;
 		float r;
-		Vec3 col;
+		Material mat;
 		Sphere(Vec3 p) : pos(p) {}
 		Sphere(Vec3 p, float rad) : pos(p), r(rad) {}
-		Sphere(Vec3 p, float rad, Vec3 c) : pos(p), r(rad), col(c) {}
+		Sphere(Vec3 p, float rad, Material m) : pos(p), r(rad), mat(m) {}
 	};
 
 	struct Disc
 	{
 		Vec3 pos;
 		Vec3 N;
-		Vec3 col;
+		Material mat;
 		Disc(Vec3 p) : pos(p) {}
 		Disc(Vec3 p, Vec3 Normal) : pos(p), N(Normal) {}
-		Disc(Vec3 p, Vec3 Normal, Vec3 c) : pos(p), N(Normal), col(c) {}
+		Disc(Vec3 p, Vec3 Normal, Material m) : pos(p), N(Normal), mat(m) {}
 	};
 
 	struct Plane
 	{
 		Vec3 abc;
-		Vec3 col;
+		Material mat;
 		Plane(Vec3 p) : abc(p) {}
-		Plane(Vec3 p, Vec3 c) : abc(p), col(c) {}
+		Plane(Vec3 p, Material m) : abc(p), mat(m) {}
 	};
 
 	Vec3 get_sphere_normal(Sphere sphere, Vec3 pos);

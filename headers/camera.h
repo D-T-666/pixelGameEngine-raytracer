@@ -4,7 +4,7 @@
 
 class Camera
 {
-private:
+public:
 	Vec3 pos;
 	Vec3 dir;
 	float fov = 0.5f;

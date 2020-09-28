@@ -16,13 +16,17 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		Camera cam(Vec3(0.0f, 0.0f, -5.0f), Vec3(0.0f, 0.0f, 1.0f));
+		Camera cam(Vec3(0.0f, 0.0f, -2.0f), Vec3(0.0f, 0.0f, 1.0f));
 		my_scene = Scene(256, 256, cam);
 
-		objects::Sphere n_shpere_mid(Vec3(0.0f, 1.0f, 0.0f), 0.5f);
-		objects::Sphere n_shpere_up(Vec3(0.0f, -1.0f, 0.0f), 0.5f);
-		my_scene.add_sphere(n_shpere_up);
-		my_scene.add_sphere(n_shpere_mid);
+		objects::Sphere n_sphere_d(Vec3(0.0f, 1.0f, 0.0f), 0.65f, Material(Vec3(0.5f, 0.5f, 1.0f)));
+		objects::Sphere n_sphere_u(Vec3(0.0f, -1.f, 0.0f), 0.65f, Material(Vec3(1.0f, 0.5f, 0.5f)));
+		objects::Sphere n_sphere_l(Vec3(-1.f, 0.0f, 0.0f), 0.65f, Material(Vec3(0.5f, 1.0f, 0.5f)));
+		objects::Sphere n_sphere_r(Vec3(1.0f, 0.0f, 0.0f), 0.65f, Material(Vec3(1.0f, 1.0f, 1.0f)));
+		my_scene.add_sphere(n_sphere_d);
+		my_scene.add_sphere(n_sphere_u);
+		my_scene.add_sphere(n_sphere_l);
+		my_scene.add_sphere(n_sphere_r);
 		return true;
 	}
 
@@ -36,6 +40,7 @@ public:
 				Draw(x, y, olc::Pixel(col.x, col.y, col.z));
 			}
 		}
+		my_scene.cam.pos.z -= 0.01f;
 		return true;
 	}
 };

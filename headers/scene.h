@@ -29,6 +29,10 @@ private:
 	std::vector<objects::Sphere> vspheres;
 	std::vector<objects::Disc> vdiscs;
 	std::vector<objects::Plane> vplanes;
+
+	std::vector<lights::Point> vlights;
+
+public:
 	Camera cam;
 	int WIDTH = 256;
 	int HEIGHT = 256;

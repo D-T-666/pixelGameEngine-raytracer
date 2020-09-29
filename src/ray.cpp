@@ -47,15 +47,16 @@ Vec3 Ray::get_col()
 //     return -1.0;
 // }
 
-// float Ray::intersect_plane(objects::Plane plane)
-// {
-//     const float denom = dot(ray.d, plane.N);
-//     if (denom > 1e-6)
-//     {
-//         const Vec3 p0l0 = plane.N * plane.pos - pos;
-//         const float t = dot(p0l0, n) / denom;
-//         const Vec3 poi = dir * t + pos;
-//         return t;
-//     }
-//     return -1.0;
-// }
+float Ray::intersect_plane(objects::Plane plane)
+{
+    // assuming vectors are all normalized
+    float denom = dot(plane.pos.normalize(), dir);
+    if (denom > 1e-6)
+    {
+        Vec3 p0l0 = plane.pos - pos;
+        float t = dot(p0l0, plane.pos.normalize()) / denom;
+        if (t >= 0.0f)
+            return t;
+    }
+    return -1.0f;
+}

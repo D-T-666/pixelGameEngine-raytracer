@@ -26,10 +26,10 @@ namespace objects
 
 	struct Plane
 	{
-		Vec3 abc;
+		Vec3 pos;
 		Material mat;
-		Plane(Vec3 p) : abc(p) {}
-		Plane(Vec3 p, Material m) : abc(p), mat(m) {}
+		Plane(Vec3 p) : pos(p) {}
+		Plane(Vec3 p, Material m) : pos(p), mat(m) {}
 	};
 
 	Vec3 get_sphere_normal(Sphere sphere, Vec3 pos);

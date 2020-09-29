@@ -1,15 +1,16 @@
 general:
-[ ] reflections
+[x] reflections
 [ ] diffuse reflections
-[ ] point lights
+[x] point lights
+[x] specular highlights
 [ ] directional lights
 [ ] diffuse point lights
 [ ] adaptive resolution
 [ ] cammera controlls
 
 objects:
-[ ] spheres
-[ ] planes
+[x] spheres
+[x] planes
 [ ] discs
 [ ] tris
 

@@ -30,7 +30,8 @@ struct Vec3
 };
 
 float dot(const Vec3 &a, const Vec3 &b);
+Vec3 vabs(Vec3 vec);
 Vec3 cross(const Vec3 &a, const Vec3 &b);
 Vec3 elt_mult(const Vec3 &a, const Vec3 &b);
-void clamp255(Vec3 &col);
+Vec3 clamp255(Vec3 &col);
 float randf();

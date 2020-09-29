@@ -66,57 +66,76 @@ Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
 			intersection_data.col = vspheres[i].mat.col;
 			intersection_data.roughness = vspheres[i].mat.roughness;
 
-			// get the light information
-			if (1)
-			{
-				const lights::Point light = vplights[0];
-				const Vec3 to_light = light.pos - hit_pos;
-				const Ray light_ray = Ray(hit_pos, to_light.normalize());
-				const float ambient_light = 0.1f;
-				if (_shadow_ray(light_ray))
-				{
-					const float dp = dot(hit_normal.normalize(), to_light.normalize());
-					const float intensity = fmax(fmin(1.0f / to_light.magSq(), 1.0f), ambient_light);
-					intersection_data.light = light.col * (dp > ambient_light ? dp : ambient_light); // * intensity;
-				}
-				else
-				{
-					intersection_data.light = {ambient_light, ambient_light, ambient_light};
-				}
-				intersection_data.specular = pow(fmax(dot(to_light.normalize(), reflection_dir.normalize()), 0.0f), 50);
-			}
-
+			// deal with stuff
 			min_d = d;
 			shot_off = false;
 		}
 	}
 	// for (int i = 0; i < vdiscs.size(); i++)
 	// {
-	// 	float d = ray.intersect_disc(vdiscs[i]);
-	// 	if (d < min_d)
+	// 	float d = ray.intersect_sphere(vdiscs[i]);
+	// 	if (d > 0.0f && d < min_d)
 	// 	{
+	// 		// Calculate the reflection direction
+	// 		hit_pos = ray.pos + ray.dir * d;
+	// 		hit_normal = objects::get_disc_normal(vdiscs[i], hit_pos);
+	// 		reflection_dir = ray.dir - (hit_normal * 2.0f * dot(hit_normal, ray.dir));
+
+	// 		// save the intersection data
+	// 		intersection_data.col = vdiscs[i].mat.col;
+	// 		intersection_data.roughness = vdiscs[i].mat.roughness;
+
+	// 		// deal with stuff
 	// 		min_d = d;
-	// 		id = i;
-	// 		shot_off = true;
+	// 		shot_off = false;
 	// 	}
 	// }
-	// for (int i = 0; i < vplanes.size(); i++)
-	// {
-	// 	float d = ray.intersect_plane(vplanes[i]);
-	// 	if (d < min_d)
-	// 	{
-	// 		min_d = d;
-	// 		ip = i;
-	// 		shot_off = true;
-	// 	}
-	// }
+	for (int i = 0; i < vplanes.size(); i++)
+	{
+		float d = ray.intersect_plane(vplanes[i]);
+		if (d > 0.0f && d < min_d)
+		{
+			// Calculate the reflection direction
+			hit_pos = ray.pos + ray.dir * d;
+			hit_normal = objects::get_plane_normal(vplanes[i], hit_pos);
+			reflection_dir = ray.dir - (hit_normal * 2.0f * dot(hit_normal, ray.dir));
+
+			// save the intersection data
+			intersection_data.col = vplanes[i].mat.col;
+			intersection_data.roughness = vplanes[i].mat.roughness;
+
+			// deal with stuff
+			min_d = d;
+			shot_off = false;
+		}
+	}
 
 	if (shot_off)
 	{
-		intersection_data.col = {0.0f, 0.0f, 0.0f};
-		intersection_data.light = {0.0f, 0.0f, 0.0f};
+		intersection_data.col = {0.2f, 0.2f, 0.2f};
+		intersection_data.light = {1.0f, 1.0f, 1.0f};
 		intersection_data.roughness = 1.0f;
 		intersection_data.specular = 0.0f;
+	}
+	else
+	{
+		const lights::Point light = vplights[rand() % vplights.size()];
+		const Vec3 to_light = light.pos - hit_pos;
+		const float ambient_light = 0.3f;
+
+		intersection_data.light = {ambient_light, ambient_light, ambient_light};
+		intersection_data.specular = 0.0f;
+
+		const Ray light_ray = Ray(hit_pos, to_light.normalize());
+
+		if (_shadow_ray(light_ray))
+		{
+			const float dp = dot(hit_normal.normalize(), to_light.normalize());
+			const float intensity = fmax(fmin(1.0f / to_light.magSq(), 1.0f), ambient_light);
+
+			intersection_data.light = light.col * (dp > ambient_light ? dp : ambient_light); // * intensity;
+			intersection_data.specular = pow(fmax(dot(to_light.normalize(), reflection_dir.normalize()), 0.0f), 50);
+		}
 	}
 
 	ray.pos = hit_pos;
@@ -136,20 +155,17 @@ Vec3 Scene::trace_pixel(int x, int y)
 
 	// bounce the ray n times
 	bool shot_off = false; // to see if the ray shoots off into the distance
-	ray = _bounce_ray(ray, shot_off);
-	if (!shot_off)
+	int bounces = 5;
+	while (!shot_off && bounces > 0)
 	{
-		int bounces = 5;
-		while (!shot_off && bounces > 0)
-		{
-			ray = _bounce_ray(ray, shot_off);
-			bounces--;
-		}
-
-		col = ray.get_col();
-
-		// col = Vec3(1.0f, 1.0f, 1.0f);
+		ray = _bounce_ray(ray, shot_off);
+		bounces--;
 	}
 
-	return Vec3(col.x * 255, col.y * 255, col.z * 255);
-};
+	col = ray.get_col();
+	col = clamp255(col);
+
+	// col = Vec3(1.0f, 1.0f, 1.0f);
+
+	return col;
+}

@@ -17,19 +17,24 @@ public:
 	bool OnUserCreate() override
 	{
 		Camera cam(Vec3(0.0f, 0.0f, -4.0f), Vec3(0.0f, 0.0f, 1.0f));
-		my_scene = Scene(256, 256, cam);
+		my_scene = Scene(128, 128, cam);
 
-		objects::Sphere n_sphere_d(Vec3(-1.f, 1.0f, 0.0f), 0.65f, Material(Vec3(0.1f, 0.1f, 1.0f), 0.5f));
-		objects::Sphere n_sphere_u(Vec3(-1.f, -1.f, 0.0f), 0.65f, Material(Vec3(1.0f, 0.1f, 0.1f), 0.5f));
-		objects::Sphere n_sphere_l(Vec3(1.0f, 1.0f, 0.0f), 0.35f, Material(Vec3(0.1f, 1.0f, 0.1f), 0.5f));
-		objects::Sphere n_sphere_m(Vec3(1.0f, -1.f, 0.0f), 0.15f, Material(Vec3(1.0f, 1.0f, 1.0f), 0.05f));
+		objects::Sphere n_sphere_d(Vec3(-1.f, 0.35f, -1.f), 0.65f, Material(Vec3(0.1f, 0.1f, 1.0f), 0.5f));
+		objects::Sphere n_sphere_u(Vec3(-1.f, 0.35f, 1.0f), 0.65f, Material(Vec3(1.0f, 0.1f, 0.1f), 0.5f));
+		objects::Sphere n_sphere_l(Vec3(1.0f, 0.65f, -1.f), 0.35f, Material(Vec3(0.1f, 1.0f, 0.1f), 0.5f));
+		objects::Sphere n_sphere_m(Vec3(1.0f, 0.05f, 1.0f), 0.95f, Material(Vec3(1.0f, 1.0f, 0.0f), 0.1f));
 		my_scene.add_sphere(n_sphere_d);
 		my_scene.add_sphere(n_sphere_u);
 		my_scene.add_sphere(n_sphere_l);
 		my_scene.add_sphere(n_sphere_m);
 
-		lights::Point n_plight(Vec3(2.75f, 2.25f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 1.0f);
-		my_scene.add_plight(n_plight);
+		objects::Plane n_plane_a(Vec3(0.0f, 1.0f, 0.0f), Material(Vec3(1.0f, 1.0f, 1.0f), 1.0f));
+		my_scene.add_plane(n_plane_a);
+
+		lights::Point n_plight_a(Vec3(0.0f, -1.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 1.0f);
+		// lights::Point n_plight_b(Vec3(0.0f, -1.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 1.0f);
+		my_scene.add_plight(n_plight_a);
+		// my_scene.add_plight(n_plight_b);
 		return true;
 	}
 
@@ -48,9 +53,9 @@ public:
 		float y = my_scene.cam.pos.y;
 		float z = my_scene.cam.pos.z;
 		const float theta = 0.02f;
-		my_scene.cam.pos = {x * cos(theta) + z * sin(theta),
-							y,
-							x * -sin(theta) + z * cos(theta)};
+		my_scene.cam.pos = Vec3(x * cos(theta) + z * sin(theta),
+								y,
+								x * -sin(theta) + z * cos(theta));
 		x = my_scene.cam.pos.x;
 		y = my_scene.cam.pos.y;
 		z = my_scene.cam.pos.z;
@@ -63,7 +68,7 @@ public:
 int main()
 {
 	RayTracer App;
-	if (App.Construct(256, 256, 1, 1))
+	if (App.Construct(128, 128, 1, 1))
 		App.Start();
 	return 0;
 }

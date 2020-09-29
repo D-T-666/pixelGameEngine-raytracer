@@ -33,5 +33,5 @@ Ray Camera::get_ray(float x_offset, float y_offset)
 	Vec3 ray_pos = pos + ray_dir * fnear;
 
 	// return a newly constructed ray with new origin and a direction
-	return Ray(ray_pos, ray_dir.normalize(), Vec3(1.0f, 1.0f, 1.0f));
+	return Ray(ray_pos, ray_dir.normalize());
 };

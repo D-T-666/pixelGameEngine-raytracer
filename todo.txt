@@ -1,0 +1,21 @@
+general:
+[ ] reflections
+[ ] diffuse reflections
+[ ] point lights
+[ ] directional lights
+[ ] diffuse point lights
+[ ] adaptive resolution
+[ ] cammera controlls
+
+objects:
+[ ] spheres
+[ ] planes
+[ ] discs
+[ ] tris
+
+materials:
+[ ] presets
+[ ] textures
+[ ] subsurface scattering
+[ ] normal mapping
+[ ] smooth shading

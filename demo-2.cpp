@@ -294,7 +294,9 @@ void trace(Ray &ray, Obj *objects, Light *lights, int max_bounces, int bounces)
 
 		for (int i = 0; i < 2; i++)
 		{
-			Ray shadow_ray(poi, (lights[i].p + Vec3(randf() * 2 - 1, randf() * 2 - 1, randf() * 2 - 1).normalize() * lights[i].r - poi).normalize(), Vec3(1, 1, 1));
+			Ray shadow_ray(poi,
+						   (lights[i].p + Vec3(randf() * 2 - 1, randf() * 2 - 1, randf() * 2 - 1).normalize() * lights[i].r - poi).normalize(), 
+						   Vec3(1, 1, 1));
 			if (!cast_shadow(shadow_ray, objects))
 			{
 				col = col + elt_mult(object_hit.col, lights[i].c * (lights[i].intensity / (lights[i].p - poi).magSq()));

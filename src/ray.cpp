@@ -15,6 +15,25 @@ float Ray::intersect_sphere(objects::Sphere sph)
     return -1.0f;
 }
 
+Vec3 Ray::get_col()
+{
+    Vec3 col = {1.0f,
+                1.0f,
+                1.0f};
+
+    while (hit_hist.size() > 0)
+    {
+        RayIntersectionData data = hit_hist.back();
+
+        Vec3 hit_col = elt_mult(data.col, data.light) + Vec3(1.0f, 1.0f, 1.0f) * (data.specular * (1.0f - data.roughness));
+        col = col * (1.0f - data.roughness) + hit_col * data.roughness;
+
+        hit_hist.pop_back();
+    }
+
+    return col;
+}
+
 // float Ray::intersect_disc(objects::Disc disc)
 // {
 //     const float denom = dot(ray.d, n);

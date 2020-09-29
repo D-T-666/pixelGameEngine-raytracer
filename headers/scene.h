@@ -20,17 +20,19 @@ public:
 	void add_disc(objects::Disc obj);
 	void add_plane(objects::Plane obj);
 
+	void add_plight(lights::Point light);
+
 	Vec3 trace_pixel(int x, int y);
 
 	Ray _bounce_ray(Ray ray, bool &shot_off);
-	Vec3 _shadow_ray(Vec3 pos);
+	bool _shadow_ray(Ray ray);
 
 private:
 	std::vector<objects::Sphere> vspheres;
 	std::vector<objects::Disc> vdiscs;
 	std::vector<objects::Plane> vplanes;
 
-	std::vector<lights::Point> vlights;
+	std::vector<lights::Point> vplights; // vector of point lights
 
 public:
 	Camera cam;

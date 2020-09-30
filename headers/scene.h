@@ -7,6 +7,7 @@
 #include "./lights.h"
 #include "./camera.h"
 #include "./ray.h"
+#include "./constants.h"
 
 class Scene
 {

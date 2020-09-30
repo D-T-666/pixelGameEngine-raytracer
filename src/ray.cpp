@@ -8,11 +8,16 @@ float Ray::intersect_sphere(objects::Sphere sph)
     if ((p > 0) ? y < sph.r * sph.r : false)
     {
         const float l = sqrt((sph.r * sph.r) - y);
-        const float t0 = p - l;
-        const float t1 = p + l;
-        return ((t0 < t1 && t0 > 0.0f) ? t0 : t1);
+        return ((-l < l && p - l > 0.0f) ? p - l : p + l);
     }
     return -1.0f;
+}
+
+bool Ray::intersects_sphere(objects::Sphere sph)
+{
+    const float p = dot(sph.pos - pos, dir);
+    const float y = (pos + dir * p - sph.pos).magSq();
+    return (p > 0) ? y < sph.r * sph.r : false;
 }
 
 Vec3 Ray::get_col()

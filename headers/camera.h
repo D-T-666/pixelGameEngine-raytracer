@@ -1,5 +1,6 @@
 #pragma once
 #include "vectors.h"
+#include "constants.h"
 #include "ray.h"
 
 class Camera
@@ -7,7 +8,7 @@ class Camera
 public:
 	Vec3 pos;
 	Vec3 dir;
-	float fov = 0.5f;
+	float fov = 0.1f;
 	float fnear = 0.1f;
 
 public:

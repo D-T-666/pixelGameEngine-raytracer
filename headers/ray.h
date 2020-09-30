@@ -9,7 +9,7 @@ struct RayIntersectionData
 	Vec3 col = {1.0f, 1.0f, 1.0f};
 	Vec3 light = {1.0f, 1.0f, 1.0f};
 	float roughness = 0.0f;
-	float specular = 1.0f;
+	float specular = 0.0f;
 
 	RayIntersectionData() {}
 	RayIntersectionData(Vec3 c) : col(c) {}
@@ -31,6 +31,8 @@ public:
 	float intersect_sphere(objects::Sphere sph);
 	float intersect_disc(objects::Disc disc);
 	float intersect_plane(objects::Plane plane);
+
+	bool intersects_sphere(objects::Sphere sph);
 
 	Vec3 get_col();
 };

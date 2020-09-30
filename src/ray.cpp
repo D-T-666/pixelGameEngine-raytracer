@@ -5,9 +5,10 @@ float Ray::intersect_sphere(objects::Sphere sph)
 
     const float p = dot(sph.pos - pos, dir);
     const float y = (pos + dir * p - sph.pos).magSq();
-    if ((p > 0) ? y < sph.r * sph.r : false)
+    const float r_sq = sph.r * sph.r;
+    if ((p > 0) ? y < r_sq : false)
     {
-        const float l = sqrt((sph.r * sph.r) - y);
+        const float l = sqrt(r_sq - y);
         return ((-l < l && p - l > 0.0f) ? p - l : p + l);
     }
     return -1.0f;

@@ -25,7 +25,7 @@ Ray Camera::get_ray(float x_offset, float y_offset)
 	// get the direction of the ray
 	Vec3 right_dir = cross(Vec3(0, 1, 0), dir);
 	Vec3 up_dir = cross(right_dir, dir);
-	Vec3 ray_dir = right_dir * x_offset * (float(Width) / float(Height)) +
+	Vec3 ray_dir = right_dir * x_offset * screen_ratio +
 				   up_dir * -y_offset +
 				   dir * fov;
 

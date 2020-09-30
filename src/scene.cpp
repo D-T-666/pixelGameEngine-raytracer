@@ -116,7 +116,10 @@ Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
 				float dp = dot(hit_normal, to_light);
 				float intensity = fmin(1.0f / d2light, 1.0f);
 
-				intersection_data.light = intersection_data.light + elt_mult(light.col, (Vec3(1.0f, 1.0f, 1.0f) - intersection_data.light) * fmax((dp > fAmbient_light ? dp : fAmbient_light) * intensity, fAmbient_light));
+				intersection_data.light = intersection_data.light +
+										  elt_mult(light.col,
+												   (Vec3(1.0f, 1.0f, 1.0f) - intersection_data.light) *
+													   fmax(dp * intensity, fAmbient_light));
 				intersection_data.specular += pow(fmax(dot(to_light, reflection_dir), 0.0f), 50);
 			}
 		}

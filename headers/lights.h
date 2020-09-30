@@ -13,6 +13,6 @@ namespace lights
         Point() {}
         Point(Vec3 _pos) : pos(_pos) {}
         Point(Vec3 _pos, Vec3 _col) : pos(_pos), col(_col) {}
-        Point(Vec3 _pos, Vec3 _col, float _intensity) : pos(_pos), col(_col), intensity(_intensity) {}
+        Point(Vec3 _pos, Vec3 _col, float _intensity) : pos(_pos), col(_col * _intensity) {}
     };
 }; // namespace lights

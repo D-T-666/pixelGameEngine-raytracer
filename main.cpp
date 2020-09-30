@@ -36,13 +36,13 @@ public:
 		objects::Plane n_plane_a(Vec3(0.0f, 1.0f, 0.0f), Material(Vec3(1.0f, 1.0f, 1.0f), 0.6f));
 		my_scene.add_plane(n_plane_a);
 
-		lights::Point n_plight_a(Vec3(1.0f, -1.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 1.5f);
-		lights::Point n_plight_b(Vec3(-1.f, -1.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 15.0f);
+		lights::Point n_plight_a(Vec3(1.0f, -1.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 5.0f);
+		lights::Point n_plight_b(Vec3(-1.f, -1.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f), 5.0f);
 		my_scene.add_plight(n_plight_a);
 		my_scene.add_plight(n_plight_b);
 		out = std::ofstream("out.ppm");
 		out << "P3\n"
-			<< Width << ' ' << Height << ' ' << "255\n";
+			<< Width << ' ' << Height << ' ' << "155\n";
 		return true;
 	}
 

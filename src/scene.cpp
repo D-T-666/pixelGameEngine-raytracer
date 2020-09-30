@@ -101,7 +101,7 @@ Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
 			reflection_dir = ray.dir - (hit_normal * 2.0f * dot(hit_normal, ray.dir));
 
 			// save the intersection data
-			intersection_data.col = vplanes[i].mat.col;
+			intersection_data.col = vplanes[i].mat.col * (int(hit_pos.x - 100) % 2 ^ int(hit_pos.z - 100) % 2 ? 1.0f : 0.4f);
 			intersection_data.roughness = vplanes[i].mat.roughness;
 
 			// deal with stuff
@@ -119,22 +119,26 @@ Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
 	}
 	else
 	{
-		const lights::Point light = vplights[rand() % vplights.size()];
-		const Vec3 to_light = light.pos - hit_pos;
 		const float ambient_light = 0.3f;
-
 		intersection_data.light = {ambient_light, ambient_light, ambient_light};
+
 		intersection_data.specular = 0.0f;
 
-		const Ray light_ray = Ray(hit_pos, to_light.normalize());
-
-		if (_shadow_ray(light_ray))
+		for (int i = 0; i < vplights.size(); i++)
 		{
-			const float dp = dot(hit_normal.normalize(), to_light.normalize());
-			const float intensity = fmax(fmin(1.0f / to_light.magSq(), 1.0f), ambient_light);
+			const lights::Point light = vplights[i];
+			const Vec3 to_light = light.pos - hit_pos;
 
-			intersection_data.light = light.col * (dp > ambient_light ? dp : ambient_light); // * intensity;
-			intersection_data.specular = pow(fmax(dot(to_light.normalize(), reflection_dir.normalize()), 0.0f), 50);
+			const Ray light_ray = Ray(hit_pos, to_light.normalize());
+
+			if (_shadow_ray(light_ray))
+			{
+				const float dp = dot(hit_normal.normalize(), to_light.normalize());
+				const float intensity = fmin(1.0f / to_light.magSq(), 1.0f);
+
+				intersection_data.light = intersection_data.light + elt_mult(light.col, (Vec3(1.0f, 1.0f, 1.0f) - intersection_data.light) * fmax((dp > ambient_light ? dp : ambient_light) * intensity, ambient_light));
+				intersection_data.specular += pow(fmax(dot(to_light.normalize(), reflection_dir.normalize()), 0.0f), 50);
+			}
 		}
 	}
 
@@ -155,7 +159,7 @@ Vec3 Scene::trace_pixel(int x, int y)
 
 	// bounce the ray n times
 	bool shot_off = false; // to see if the ray shoots off into the distance
-	int bounces = 5;
+	int bounces = 100;
 	while (!shot_off && bounces > 0)
 	{
 		ray = _bounce_ray(ray, shot_off);

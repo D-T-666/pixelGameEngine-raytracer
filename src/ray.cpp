@@ -31,7 +31,7 @@ Vec3 Ray::get_col()
     {
         RayIntersectionData data = hit_hist.back();
 
-        Vec3 hit_col = elt_mult(data.col, data.light) + Vec3(1.0f, 1.0f, 1.0f) * (data.specular * (1.0f - data.roughness));
+        Vec3 hit_col = elt_mult(data.col, data.light) + data.light * (data.specular * (1.0f - data.roughness));
         col = col * (1.0f - data.roughness) + hit_col * data.roughness;
 
         hit_hist.pop_back();

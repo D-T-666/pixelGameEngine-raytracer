@@ -8,28 +8,28 @@ namespace objects
 	{
 		Vec3 pos;
 		float r;
-		Material mat;
+		Mat mat;
 		Sphere(Vec3 p) : pos(p) {}
 		Sphere(Vec3 p, float rad) : pos(p), r(rad) {}
-		Sphere(Vec3 p, float rad, Material m) : pos(p), r(rad), mat(m) {}
+		Sphere(Vec3 p, float rad, Mat m) : pos(p), r(rad), mat(m) {}
 	};
 
 	struct Disc
 	{
 		Vec3 pos;
 		Vec3 N;
-		Material mat;
+		Mat mat;
 		Disc(Vec3 p) : pos(p) {}
 		Disc(Vec3 p, Vec3 Normal) : pos(p), N(Normal) {}
-		Disc(Vec3 p, Vec3 Normal, Material m) : pos(p), N(Normal), mat(m) {}
+		Disc(Vec3 p, Vec3 Normal, Mat m) : pos(p), N(Normal), mat(m) {}
 	};
 
 	struct Plane
 	{
 		Vec3 pos;
-		Material mat;
+		Mat mat;
 		Plane(Vec3 p) : pos(p) {}
-		Plane(Vec3 p, Material m) : pos(p), mat(m) {}
+		Plane(Vec3 p, Mat m) : pos(p), mat(m) {}
 	};
 
 	Vec3 get_sphere_normal(Sphere sphere, Vec3 pos);

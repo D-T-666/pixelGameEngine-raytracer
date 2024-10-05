@@ -7,7 +7,7 @@ Scene::Scene(int _W, int _H)
 	WIDTH = _W;
 	HEIGHT = _H;
 }
-Scene::Scene(int _W, int _H, Camera _cam)
+Scene::Scene(int _W, int _H, MyCamera _cam)
 {
 	WIDTH = _W;
 	HEIGHT = _H;
@@ -32,7 +32,7 @@ void Scene::add_plight(lights::Point light)
 	vplights.push_back(light);
 }
 
-bool Scene::_shadow_ray(Ray ray)
+bool Scene::_shadow_ray(MyRay ray)
 {
 	for (int i = 0; i < vspheres.size(); i++)
 	{
@@ -44,13 +44,13 @@ bool Scene::_shadow_ray(Ray ray)
 	return true;
 }
 
-Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
+MyRay Scene::_bounce_ray(MyRay ray, bool &shot_off)
 {
 	float min_d = 10000.0f;
 	Vec3 hit_normal;
 	Vec3 reflection_dir;
 	Vec3 hit_pos;
-	RayIntersectionData intersection_data;
+	MyRayIntersectionData intersection_data;
 	shot_off = true;
 	for (unsigned int i = 0; i < vspheres.size(); i++)
 	{
@@ -111,7 +111,7 @@ Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
 			const float d2light = to_light.magSq();
 			to_light = to_light / sqrt(d2light);
 
-			if (_shadow_ray(Ray(hit_pos, to_light)))
+			if (_shadow_ray(MyRay(hit_pos, to_light)))
 			{
 				float dp = dot(hit_normal, to_light);
 				float intensity = fmin(1.0f / d2light, 1.0f);
@@ -129,13 +129,13 @@ Ray Scene::_bounce_ray(Ray ray, bool &shot_off)
 	ray.dir = reflection_dir;
 	ray.hit_hist.push_back(intersection_data);
 	return ray;
-	// return Ray(hit_pos, reflection_dir.normalize(), intersection_data);
+	// return MyRay(hit_pos, reflection_dir.normalize(), intersection_data);
 }
 
 Vec3 Scene::trace_pixel(int x, int y)
 {
 	// get the ray to trace
-	Ray ray = cam.get_ray(float(x) / float(WIDTH) * 2.0f - 1.0f,
+	MyRay ray = cam.get_ray(float(x) / float(WIDTH) * 2.0f - 1.0f,
 						  float(y) / float(HEIGHT) * 2.0f - 1.0f);
 
 	// bounce the ray n times

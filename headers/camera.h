@@ -3,7 +3,7 @@
 #include "constants.h"
 #include "ray.h"
 
-class Camera
+class MyCamera
 {
 public:
 	Vec3 pos;
@@ -12,8 +12,8 @@ public:
 	float fnear = 0.1f;
 
 public:
-	Camera();
-	Camera(Vec3 _pos, Vec3 _dir);
-	Camera(Vec3 _pos, Vec3 _dir, float fov);
-	Ray get_ray(float x_offset, float y_offset);
+	MyCamera();
+	MyCamera(Vec3 _pos, Vec3 _dir);
+	MyCamera(Vec3 _pos, Vec3 _dir, float fov);
+	MyRay get_ray(float x_offset, float y_offset);
 };

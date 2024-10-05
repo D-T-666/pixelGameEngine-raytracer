@@ -1,2 +1,2 @@
 raytracer: main.cpp src/scene.cpp src/vectors.cpp src/ray.cpp src/objects.cpp src/camera.cpp src/lights.cpp
-	clear && g++ -o a.out main.cpp src/scene.cpp src/vectors.cpp src/ray.cpp src/objects.cpp src/camera.cpp src/lights.cpp -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17 && ./a.out
+	clear && g++ -o a.out main.cpp src/scene.cpp src/vectors.cpp src/ray.cpp src/objects.cpp src/camera.cpp src/lights.cpp -lX11 -lpthread -I/opt/homebrew/include/ -L/opt/homebrew/Cellar/libx11/1.8.10/lib -I/opt/homebrew/Cellar/raylib/5.0/include -L/opt/homebrew/Cellar/raylib/5.0/lib -lraylib -std=c++17 && ./a.out

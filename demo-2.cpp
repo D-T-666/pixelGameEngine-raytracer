@@ -53,15 +53,15 @@ double randf()
 }
 
 // -- rays --
-struct Ray
+struct MyRay
 {
 	Vec3 o, d, c;
-	Ray(Vec3 _o, Vec3 _d, Vec3 _c) : o(_o), d(_d), c(_c) {}
+	MyRay(Vec3 _o, Vec3 _d, Vec3 _c) : o(_o), d(_d), c(_c) {}
 };
 
 // -- objects and object functions --
 
-double get_sphere_intersection(const Vec3 &c, const double &r, const Ray &ray)
+double get_sphere_intersection(const Vec3 &c, const double &r, const MyRay &ray)
 {
 	const double p = dot(c - ray.o, ray.d);
 	const double y = (ray.o + ray.d * p - c).magSq();
@@ -71,14 +71,14 @@ double get_sphere_intersection(const Vec3 &c, const double &r, const Ray &ray)
 	return ((t0 < t1 && t0 > 0) ? t0 : t1);
 }
 
-bool intersects_sphere(const Vec3 &c, const double &r, const Ray &ray)
+bool intersects_sphere(const Vec3 &c, const double &r, const MyRay &ray)
 {
 	const double p = dot(c - ray.o, ray.d);
 	const double y = (ray.o + ray.d * p - c).magSq();
 	return (p > 0) ? y < r * r : false;
 }
 
-double get_plane_intersection(const Vec3 &n, const double &p0, const Ray &ray)
+double get_plane_intersection(const Vec3 &n, const double &p0, const MyRay &ray)
 {
 	const float denom = dot(ray.d, n);
 	if (denom > 1e-6)
@@ -114,7 +114,7 @@ struct Obj
 		}
 	}
 
-	bool intersects(Ray &ray) const
+	bool intersects(MyRay &ray) const
 	{
 		switch (type)
 		{
@@ -125,7 +125,7 @@ struct Obj
 		}
 	}
 
-	double get_intersection(Ray &ray) const
+	double get_intersection(MyRay &ray) const
 	{
 		switch (type)
 		{
@@ -146,33 +146,33 @@ struct Light
 	Light() : p(Vec3(0, 0, 0)), c(Vec3(1, 1, 1)), intensity(1.0){};
 	Light(Vec3 p, Vec3 c, double intensity) : p(p), c(c), intensity(intensity){};
 
-	bool intersects(Ray &ray) const
+	bool intersects(MyRay &ray) const
 	{
 		return get_sphere_intersection(p, r, ray) != 0;
 	}
 
-	double get_intersection(Ray &ray) const
+	double get_intersection(MyRay &ray) const
 	{
 		return get_sphere_intersection(p, r, ray);
 	}
 };
-struct Camera
+struct MyCamera
 {
 	Vec3 p;
 	Vec3 n;
 	double d;
-	Camera(Vec3 p, Vec3 n, double d) : p(p), n(n), d(d) {}
+	MyCamera(Vec3 p, Vec3 n, double d) : p(p), n(n), d(d) {}
 
-	Ray get_ray(double x, double y)
+	MyRay get_ray(double x, double y)
 	{
 		Vec3 o = p - n * d;
 		Vec3 d = cross(Vec3(0, 1, 0), n) * x + cross(cross(Vec3(0, 1, 0), n), n) * -y + n;
-		return Ray(o, (d).normalize(), Vec3(1, 1, 1));
+		return MyRay(o, (d).normalize(), Vec3(1, 1, 1));
 	}
 };
 
 // -- main functions --
-bool cast(Ray &ray, Obj *objects, Light *lights, double &t_final, bool &object_or_light_final, Obj &object_hit_final, Light &light_hit_final)
+bool cast(MyRay &ray, Obj *objects, Light *lights, double &t_final, bool &object_or_light_final, Obj &object_hit_final, Light &light_hit_final)
 {
 	Obj object_hit;
 	Light light_hit;
@@ -230,7 +230,7 @@ bool cast(Ray &ray, Obj *objects, Light *lights, double &t_final, bool &object_o
 	return hit;
 }
 
-bool cast_shadow(Ray &ray, Obj *objects)
+bool cast_shadow(MyRay &ray, Obj *objects)
 {
 	for (int i = 0; i < 5; i++)
 	{
@@ -242,7 +242,7 @@ bool cast_shadow(Ray &ray, Obj *objects)
 	return false;
 }
 
-void trace(Ray &ray, Obj *objects, Light *lights, int max_bounces, int bounces)
+void trace(MyRay &ray, Obj *objects, Light *lights, int max_bounces, int bounces)
 {
 	double t = 0;
 	Obj object_hit;
@@ -261,7 +261,7 @@ void trace(Ray &ray, Obj *objects, Light *lights, int max_bounces, int bounces)
 
 			if (object_hit.clarity == 1.0)
 			{
-				Ray new_ray(poi, new_dir, new_col);
+				MyRay new_ray(poi, new_dir, new_col);
 				trace(new_ray, objects, lights, max_bounces, bounces + 1);
 				ray.c = new_ray.c;
 			}
@@ -273,7 +273,7 @@ void trace(Ray &ray, Obj *objects, Light *lights, int max_bounces, int bounces)
 				{
 					dir = Vec3(randf() * 2 - 1, randf() * 2 - 1, randf() * 2 - 1);
 				}
-				Ray new_ray(poi, (new_dir + (dir * (1 - object_hit.clarity))).normalize(), new_col);
+				MyRay new_ray(poi, (new_dir + (dir * (1 - object_hit.clarity))).normalize(), new_col);
 				trace(new_ray, objects, lights, max_bounces, bounces + 1);
 				new_ray.c;
 				ray.c = elt_mult(ray.c, new_ray.c) * object_hit.clarity; // * object_hit.clarity + object_hit.col * (1 - object_hit.clarity);
@@ -294,8 +294,8 @@ void trace(Ray &ray, Obj *objects, Light *lights, int max_bounces, int bounces)
 
 		for (int i = 0; i < 2; i++)
 		{
-			Ray shadow_ray(poi,
-						   (lights[i].p + Vec3(randf() * 2 - 1, randf() * 2 - 1, randf() * 2 - 1).normalize() * lights[i].r - poi).normalize(), 
+			MyRay shadow_ray(poi,
+						   (lights[i].p + Vec3(randf() * 2 - 1, randf() * 2 - 1, randf() * 2 - 1).normalize() * lights[i].r - poi).normalize(),
 						   Vec3(1, 1, 1));
 			if (!cast_shadow(shadow_ray, objects))
 			{
@@ -336,7 +336,7 @@ int main()
 	Light lights[2] = {
 		Light(Vec3(-1., -1., 0.5), Vec3(1, 1, 1), 1.0),
 		Light(Vec3(1.0, -1., 0.5), Vec3(1, 1, 1), 1.0)};
-	Camera camera(Vec3(0, -0.25, 1.25), Vec3(0, 0.25, 1).normalize(), 0.5);
+	MyCamera camera(Vec3(0, -0.25, 1.25), Vec3(0, 0.25, 1).normalize(), 0.5);
 
 	// -- looping over every pixel and storing it in the file --
 	for (int y = 0; y < H; ++y)
@@ -348,10 +348,10 @@ int main()
 			{
 				for (float sub_x = 0.0f; sub_x < 1.0f; sub_x += 1 / double(sample_y))
 				{
-					Ray ray = camera.get_ray(
+					MyRay ray = camera.get_ray(
 						float(x + sub_x) / float(W) * 2 - 1,
 						float(y + sub_y) / float(H) * 2 - 1);
-					// Ray ray(
+					// MyRay ray(
 					// 	Vec3(0, 0, 0),
 					// 	Vec3((float(x) + sub_x) / double(W) * 2 - 1, (float(y) + sub_y) / double(H) * 2 - 1, 1).normalize(),
 					// 	Vec3(1, 1, 1));

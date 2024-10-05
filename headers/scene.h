@@ -15,7 +15,7 @@ class Scene
 public:
 	Scene();
 	Scene(int _W, int _H);
-	Scene(int _W, int _H, Camera _cam);
+	Scene(int _W, int _H, MyCamera _cam);
 
 	void add_sphere(objects::Sphere obj);
 	void add_disc(objects::Disc obj);
@@ -25,8 +25,8 @@ public:
 
 	Vec3 trace_pixel(int x, int y);
 
-	Ray _bounce_ray(Ray ray, bool &shot_off);
-	bool _shadow_ray(Ray ray);
+	MyRay _bounce_ray(MyRay ray, bool &shot_off);
+	bool _shadow_ray(MyRay ray);
 
 private:
 	std::vector<objects::Sphere> vspheres;
@@ -36,7 +36,7 @@ private:
 	std::vector<lights::Point> vplights; // vector of point lights
 
 public:
-	Camera cam;
+	MyCamera cam;
 	int WIDTH = 256;
 	int HEIGHT = 256;
 };

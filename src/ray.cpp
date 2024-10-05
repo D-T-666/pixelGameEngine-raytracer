@@ -1,6 +1,6 @@
 #include "../headers/ray.h"
 
-float Ray::intersect_sphere(objects::Sphere sph)
+float MyRay::intersect_sphere(objects::Sphere sph)
 {
 
     const float p = dot(sph.pos - pos, dir);
@@ -14,14 +14,14 @@ float Ray::intersect_sphere(objects::Sphere sph)
     return -1.0f;
 }
 
-bool Ray::intersects_sphere(objects::Sphere sph)
+bool MyRay::intersects_sphere(objects::Sphere sph)
 {
     const float p = dot(sph.pos - pos, dir);
     const float y = (pos + dir * p - sph.pos).magSq();
     return (p > 0) ? y < sph.r * sph.r : false;
 }
 
-Vec3 Ray::get_col()
+Vec3 MyRay::get_col()
 {
     Vec3 col = {1.0f,
                 1.0f,
@@ -29,7 +29,7 @@ Vec3 Ray::get_col()
 
     while (hit_hist.size() > 0)
     {
-        RayIntersectionData data = hit_hist.back();
+        MyRayIntersectionData data = hit_hist.back();
 
         Vec3 hit_col = elt_mult(data.col, data.light) + Vec3(1.0f, 1.0f, 1.0f) * (data.specular * (1.0f - data.roughness));
         col = col * (1.0f - data.roughness) + hit_col * data.roughness;
@@ -40,7 +40,7 @@ Vec3 Ray::get_col()
     return col;
 }
 
-// float Ray::intersect_disc(objects::Disc disc)
+// float MyRay::intersect_disc(objects::Disc disc)
 // {
 //     const float denom = dot(ray.d, n);
 //     if (denom > 1e-6)
@@ -53,7 +53,7 @@ Vec3 Ray::get_col()
 //     return -1.0;
 // }
 
-float Ray::intersect_plane(objects::Plane plane)
+float MyRay::intersect_plane(objects::Plane plane)
 {
     // assuming vectors are all normalized
     float denom = dot(plane.pos.normalize(), dir);
